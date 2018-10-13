@@ -1,0 +1,7 @@
+type Sqaure {
+  _id: ID!
+  x: Int!
+  y: Int!
+  isTaken: Boolean
+  takenByUserID: ID!
+}

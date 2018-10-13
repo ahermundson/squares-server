@@ -1,0 +1,11 @@
+type Game {
+  _id: ID!
+  firstQuarterHome: Int
+  firstQuarterAway: Int
+  secondQuarterHome: Int
+  secondQuarterAway: Int
+  thirdQuarterHome: Int
+  thirdQuarterAway: Int
+  fourthQuarterHome: Int
+  fourthQuarterAway: Int
+}
