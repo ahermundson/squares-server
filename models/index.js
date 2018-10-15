@@ -1,9 +1,9 @@
-import GameModel from "./game-model";
-import SquareModel from "./square-model";
-import UserModel from "./user-model";
+import Game from "./game-model";
+import Square from "./square-model";
+import User from "./user-model";
 
 export default {
-  GameModel,
-  SquareModel,
-  UserModel
+  Game,
+  Square,
+  User
 };

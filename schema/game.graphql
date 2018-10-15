@@ -13,3 +13,12 @@ type Game {
 type Query {
   allGames: [Game!]
 }
+
+type newGameResponse {
+  ok: Boolean!
+  newGame: Game
+}
+
+type Mutation {
+  createNewGame: newGameResponse!
+}

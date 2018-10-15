@@ -1,5 +1,5 @@
 import express from "express";
-// import mongoose from "mongoose";
+import mongoose from "mongoose";
 import path from "path";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -7,20 +7,27 @@ import { graphqlExpress, graphiqlExpress } from "apollo-server-express";
 import { makeExecutableSchema } from "graphql-tools";
 import { fileLoader, mergeTypes, mergeResolvers } from "merge-graphql-schemas";
 // import jwt from "jsonwebtoken";
-// import mongoConnection from "./modules/mongo-connection";
+import mongoConnection from "./modules/mongo-connection";
 import models from "./models";
 // import loaders from "./loaders";
 // import { refreshTokens } from "./auth";
-// import nodemailer from "nodemailer";
 // import _ from "lodash";
 
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, "./schema")));
 
+const resolvers = mergeResolvers(
+  fileLoader(path.join(__dirname, "./resolvers"))
+);
+
 const schema = makeExecutableSchema({
-  typeDefs
+  typeDefs,
+  resolvers
 });
 
 const app = express();
+
+mongoose.Promise = global.Promise;
+mongoConnection.connect();
 
 app.use(cors("*"));
 
