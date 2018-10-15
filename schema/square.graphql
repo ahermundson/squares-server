@@ -1,7 +1,15 @@
-type Sqaure {
+type Square {
   _id: ID!
   x: Int!
   y: Int!
   isTaken: Boolean
   takenByUserID: ID!
+}
+
+type Query {
+  getGameSquares(id: ID!): [Square!]
+}
+
+type Mutation {
+  markSquare(id: ID!): Square!
 }

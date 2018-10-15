@@ -9,3 +9,7 @@ type Game {
   fourthQuarterHome: Int
   fourthQuarterAway: Int
 }
+
+type Query {
+  allGames: [Game!]
+}
