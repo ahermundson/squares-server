@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 
 const squareSchema = new Schema(
   {
-    first_name: { type: String },
     x: { type: Number },
     y: { type: Number },
     isTaken: { type: Boolean },

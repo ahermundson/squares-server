@@ -1,0 +1,4 @@
+type Board {
+  _id: ID!
+  gameId: ID!
+}
