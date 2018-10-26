@@ -1,0 +1,22 @@
+type Team {
+  teamName: String!
+}
+
+type GetTeamResponse {
+  ok: Boolean!
+  team: Team
+}
+
+type CreateTeamResponse {
+  ok: Boolean!
+  team: Team
+}
+
+type Query {
+  getAllTeams: [Team]!
+  getTeamByID(teamId: String!): GetTeamResponse
+}
+
+type Mutation {
+  createTeam(teamName: String!): CreateTeamResponse
+}

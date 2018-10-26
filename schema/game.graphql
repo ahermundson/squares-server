@@ -9,6 +9,8 @@ type Game {
   fourthQuarterHome: Int
   fourthQuarterAway: Int
   boardId: Int!
+  awayTeam: Team!
+  homeTeam: Team!
 }
 
 type Query {
@@ -21,5 +23,5 @@ type newGameResponse {
 }
 
 type Mutation {
-  createNewGame: newGameResponse!
+  createNewGame(homeTeamId: String!, awayTeamId: String!): newGameResponse!
 }
