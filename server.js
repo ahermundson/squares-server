@@ -46,4 +46,9 @@ app.use("/graphiql", graphiqlExpress({ endpointURL: "/graphql" }));
 
 app.use(bodyParser.json());
 
+app.post("/create-game", (req, res) => {
+  console.log(req.body);
+  res.send("OK");
+});
+
 app.listen(4000, () => console.log(`🚀  Server ready at port 4000`));
