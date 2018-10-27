@@ -6,12 +6,9 @@ import cors from "cors";
 import { graphqlExpress, graphiqlExpress } from "apollo-server-express";
 import { makeExecutableSchema } from "graphql-tools";
 import { fileLoader, mergeTypes, mergeResolvers } from "merge-graphql-schemas";
-// import jwt from "jsonwebtoken";
 import mongoConnection from "./modules/mongo-connection";
 import models from "./models";
-// import loaders from "./loaders";
-// import { refreshTokens } from "./auth";
-// import _ from "lodash";
+import { createGameRoute, createGameHandler } from "./handlers/newGame";
 
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, "./schema")));
 
@@ -46,9 +43,6 @@ app.use("/graphiql", graphiqlExpress({ endpointURL: "/graphql" }));
 
 app.use(bodyParser.json());
 
-app.post("/create-game", (req, res) => {
-  console.log(req.body);
-  res.send("OK");
-});
+app.post(createGameRoute, createGameHandler);
 
 app.listen(4000, () => console.log(`🚀  Server ready at port 4000`));

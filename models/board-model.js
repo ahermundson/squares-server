@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const boardSchema = new Schema(
   {
-    gameId: { type: String }
+    game: { type: Schema.Types.ObjectId, ref: "Game" }
   },
   { collection: "Boards" }
 );

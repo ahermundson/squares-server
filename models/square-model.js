@@ -8,7 +8,7 @@ const squareSchema = new Schema(
     y: { type: Number },
     isTaken: { type: Boolean },
     takenByUserID: { type: Number },
-    gameID: { type: Number }
+    board: { type: Schema.Types.ObjectId, ref: "Board" }
   },
   { collection: "Squares" }
 );

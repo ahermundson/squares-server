@@ -2,6 +2,12 @@
   "extends": ["prettier", "airbnb-base"],
   "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "quotes": 0,
+    "no-plusplus": "off",
+    "comma-dangle": "off",
+    "no-underscore-dangle": "off",
+    "arrow-parens": "off",
+    "function-paren-newline": "off"
   }
 }

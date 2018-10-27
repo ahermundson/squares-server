@@ -3,7 +3,8 @@ type Square {
   x: Int!
   y: Int!
   isTaken: Boolean
-  takenByUserID: ID!
+  takenByUser: User
+  board: Board!
 }
 
 type Query {
