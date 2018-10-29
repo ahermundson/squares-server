@@ -2,3 +2,12 @@ type Board {
   _id: ID!
   game: ID!
 }
+
+type GetBoardResponse {
+  ok: Boolean!
+  board: Board
+}
+
+type Query {
+  getGameBoard(id: ID!): GetBoardResponse!
+}

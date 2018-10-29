@@ -14,7 +14,6 @@ export default {
     }
   },
   Query: {
-    getGameSquares: (_, { id }, { models }) =>
-      models.Square.find({ gameID: id })
+    getGameSquares: (_, { id }, { models }) => models.Square.find({ board: id })
   }
 };
