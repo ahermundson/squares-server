@@ -7,7 +7,7 @@ const squareSchema = new Schema(
     x: { type: Number },
     y: { type: Number },
     isTaken: { type: Boolean },
-    takenByUserID: { type: Number },
+    takenByUser: { type: Schema.Types.ObjectId, ref: "User" },
     board: { type: Schema.Types.ObjectId, ref: "Board" }
   },
   { collection: "Squares" }

@@ -9,7 +9,8 @@ function insertRow(x, { _id: board }, promiseArray) {
         x,
         y,
         board,
-        isTaken: false
+        isTaken: false,
+        takenByUser: null
       })
     );
   }

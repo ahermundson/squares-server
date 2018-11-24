@@ -1,6 +1,6 @@
 export default {
   Query: {
-    allGames: async (_, __, { models }) => models.Game.find({})
+    allGames: (_, __, { models }) => models.Game.find({})
   },
   Mutation: {
     createNewGame: async (_, { homeTeamId, awayTeamId }, { models }) => {

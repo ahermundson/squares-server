@@ -1,19 +1,25 @@
 export default {
   Mutation: {
-    markSquare: async (_, { id, userID }, { models }) => {
+    markSquare: async (_, { id }, { models }) => {
       const updatedSquare = await models.Square.findOneAndUpdate(
         {
           _id: id
         },
         {
           isTaken: true,
-          updatedByUserID: userID
+          takenByUser: "5bf616b49a7d1e306f841fe8"
         }
       );
       return updatedSquare;
     }
   },
   Query: {
-    getGameSquares: (_, { id }, { models }) => models.Square.find({ board: id })
+    getGameSquares: (_, { id }, { models }) =>
+      models.Square.find({ board: id }).sort("y")
+  },
+  Square: {
+    takenByUser({ takenByUser }, _, { loaders }) {
+      return takenByUser ? loaders.userLoader.load(takenByUser) : null;
+    }
   }
 };

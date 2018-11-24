@@ -2,7 +2,7 @@ type Square {
   _id: ID!
   x: Int!
   y: Int!
-  isTaken: Boolean
+  isTaken: Boolean!
   takenByUser: User
   board: Board!
 }

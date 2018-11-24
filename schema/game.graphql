@@ -8,7 +8,7 @@ type Game {
   thirdQuarterAway: Int
   fourthQuarterHome: Int
   fourthQuarterAway: Int
-  boardId: Int!
+  boardId: String!
   awayTeam: Team!
   homeTeam: Team!
 }

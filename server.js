@@ -9,6 +9,7 @@ import { fileLoader, mergeTypes, mergeResolvers } from "merge-graphql-schemas";
 import mongoConnection from "./modules/mongo-connection";
 import models from "./models";
 import { createGameRoute, createGameHandler } from "./handlers/newGame";
+import loaders from "./loaders";
 
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, "./schema")));
 
@@ -34,7 +35,8 @@ app.use(
   graphqlExpress(() => ({
     schema,
     context: {
-      models
+      models,
+      loaders
     }
   }))
 );

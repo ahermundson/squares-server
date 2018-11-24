@@ -6,3 +6,7 @@ type User {
   isAdmin: Boolean!
   username: String!
 }
+
+type Mutation {
+  createUser: User!
+}
