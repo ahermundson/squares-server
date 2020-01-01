@@ -6,10 +6,10 @@ import mongoose from "mongoose"; // eslint-disable-line
 const connectionString = process.env.MONGODB_URI;
 
 const connectToMongoDatabase = () => {
-  mongoose.connect(
-    connectionString,
-    { useNewUrlParser: true }
-  );
+  mongoose.connect(connectionString, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
   mongoose.set("debug", true);
 
   mongoose.connection.on("connected", () => {
