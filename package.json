@@ -45,7 +45,7 @@
     "lodash": "^4.17.13",
     "merge-graphql-schemas": "^1.5.7",
     "moment": "^2.21.0",
-    "mongoose": "^5.3.3",
+    "mongoose": "^5.7.5",
     "nodemailer": "^4.6.7",
     "request": "^2.85.0"
   }
