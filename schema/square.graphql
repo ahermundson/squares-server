@@ -14,3 +14,7 @@ type Query {
 type Mutation {
   markSquare(id: ID!): Square!
 }
+
+type Subscription {
+  squareTaken: Square!
+}
