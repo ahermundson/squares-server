@@ -1,9 +1,18 @@
+import { withFilter } from "graphql-subscriptions";
+
 const SQUARE_TAKEN = "SQUARE_TAKEN";
 
 export default {
   Subscription: {
     squareTaken: {
-      subscribe: (_, __, { pubsub }) => pubsub.asyncIterator(SQUARE_TAKEN)
+      subscribe: withFilter(
+        (_, __, { pubsub }) => pubsub.asyncIterator(SQUARE_TAKEN),
+        (payload, variables) => {
+          console.log("is this hitting?", variables);
+          console.log("payload", payload.squareTaken.board == variables.id);
+          return payload.squareTaken.board == variables.id;
+        }
+      )
     }
   },
   Mutation: {
@@ -15,9 +24,9 @@ export default {
         {
           isTaken: true,
           takenByUser: "5bf616b49a7d1e306f841fe8"
-        }
+        },
+        { new: true }
       );
-      console.log(updatedSquare);
       pubsub.publish(SQUARE_TAKEN, {
         squareTaken: updatedSquare
       });
@@ -30,8 +39,10 @@ export default {
   },
   Square: {
     takenByUser({ takenByUser }, _, { loaders }) {
-      console.log("IS THIS HIT? ", takenByUser);
       return takenByUser ? loaders.userLoader.load(takenByUser) : null;
+    },
+    board({ board }, _, { loaders }) {
+      return board ? loaders.boardLoader.load(board) : null;
     }
   }
 };

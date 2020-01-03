@@ -8,5 +8,11 @@ export default {
       const usersById = _.keyBy(users, "_id");
       return userIds.map(bedId => usersById[bedId]);
     })
+  ),
+  boardLoader: new DataLoader(boardIds =>
+    models.Board.find({ _id: { $in: boardIds } }).then(boards => {
+      const boardsById = _.keyBy(boards, "_id");
+      return boardIds.map(bedId => boardsById[bedId]);
+    })
   )
 };

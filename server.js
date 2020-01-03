@@ -14,6 +14,7 @@ const resolvers = mergeResolvers(
 );
 
 mongoose.Promise = global.Promise;
+mongoose.set("useFindAndModify", false);
 mongoConnection.connect();
 const pubsub = new PubSub();
 
@@ -27,4 +28,7 @@ const server = new ApolloServer({
   }
 });
 
-server.listen().then(({ url }) => console.log(`server started at ${url}`));
+server.listen().then(({ url, subscriptionsUrl }) => {
+  console.log(`server started at ${url}`);
+  console.log(`subscriptions url = ${subscriptionsUrl}`);
+});
