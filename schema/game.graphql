@@ -11,6 +11,8 @@ type Game {
   boardId: String!
   awayTeam: Team!
   homeTeam: Team!
+  currentHomeScore: Int
+  currentAwayScore: Int
 }
 
 type Query {
