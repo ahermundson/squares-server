@@ -1,3 +1,7 @@
+import { withFilter } from "graphql-subscriptions";
+
+const GAME_SCORE_UPDATED = "GAME_SCORE_UPDATED";
+
 export default {
   Query: {
     allGames: (_, __, { models }) => models.Game.find({})
@@ -23,6 +27,14 @@ export default {
         console.log(err);
         return { ok: false };
       }
+    }
+  },
+  Subscription: {
+    scoreUpdated: {
+      subscribe: withFilter(
+        (_, __, { pubsub }) => pubsub.asyncIterator(GAME_SCORE_UPDATED),
+        (payload, variables) => payload.scoreUpdated.game == variables.id
+      )
     }
   },
   Game: {

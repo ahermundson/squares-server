@@ -27,3 +27,7 @@ type newGameResponse {
 type Mutation {
   createNewGame(homeTeamId: String!, awayTeamId: String!): newGameResponse!
 }
+
+type Subscription {
+  scoreUpdated(gameId: ID!): Game!
+}

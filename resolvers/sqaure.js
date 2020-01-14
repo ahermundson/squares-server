@@ -7,11 +7,7 @@ export default {
     squareTaken: {
       subscribe: withFilter(
         (_, __, { pubsub }) => pubsub.asyncIterator(SQUARE_TAKEN),
-        (payload, variables) => {
-          console.log("is this hitting?", variables);
-          console.log("payload", payload.squareTaken.board == variables.id);
-          return payload.squareTaken.board == variables.id;
-        }
+        (payload, variables) => payload.squareTaken.board == variables.id
       )
     }
   },
