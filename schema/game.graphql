@@ -11,8 +11,8 @@ type Game {
   boardId: String!
   awayTeam: Team!
   homeTeam: Team!
-  currentHomeScore: Int
-  currentAwayScore: Int
+  homeTeamScore: Int
+  awayTeamScore: Int
 }
 
 type Query {
@@ -24,8 +24,14 @@ type newGameResponse {
   newGame: Game
 }
 
+type updateScoreResponse {
+  ok: Boolean!
+  udpatedGame: Game
+}
+
 type Mutation {
   createNewGame(homeTeamId: String!, awayTeamId: String!): newGameResponse!
+  updateScore(homeTeamScore: Int!, awayTeamScore: Int!, gameId: ID!): Game
 }
 
 type Subscription {

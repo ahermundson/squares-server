@@ -27,13 +27,39 @@ export default {
         console.log(err);
         return { ok: false };
       }
+    },
+    updateScore: async (
+      _,
+      { homeTeamScore, awayTeamScore, gameId },
+      { models, pubsub }
+    ) => {
+      console.log(gameId);
+      try {
+        const updatedGame = await models.Game.findOneAndUpdate(
+          { _id: gameId },
+          { homeTeamScore, awayTeamScore },
+          { new: true }
+        );
+        pubsub.publish(GAME_SCORE_UPDATED, {
+          gameId,
+          homeTeamScore,
+          awayTeamScore
+        });
+        console.log("UPDATED GAME: ", updatedGame);
+        return updatedGame;
+      } catch (err) {
+        console.log("ERR: ", err);
+        return null;
+      }
     }
   },
   Subscription: {
     scoreUpdated: {
       subscribe: withFilter(
         (_, __, { pubsub }) => pubsub.asyncIterator(GAME_SCORE_UPDATED),
-        (payload, variables) => payload.scoreUpdated.game == variables.id
+        (payload, variables) => {
+          return payload.gameId == variables.gameId;
+        }
       )
     }
   },
