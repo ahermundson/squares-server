@@ -14,7 +14,9 @@ const gameSchema = new Schema(
     fourthQuarterAway: { type: Number },
     homeTeam: { type: Schema.Types.ObjectId, ref: "Team" },
     awayTeam: { type: Schema.Types.ObjectId, ref: "Team" },
-    boardId: { type: Schema.Types.ObjectId, ref: "Board" }
+    boardId: { type: Schema.Types.ObjectId, ref: "Board" },
+    homeTeamScore: { type: Number },
+    awayTeamScore: { type: Number }
   },
   { collection: "Games" }
 );
