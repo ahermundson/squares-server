@@ -35,15 +35,13 @@ export default {
       { homeTeamScore, awayTeamScore, gameId },
       { models, pubsub }
     ) => {
-      console.log(homeTeamScore);
       try {
         const updatedGame = await models.Game.findOneAndUpdate(
           { _id: gameId },
           { homeTeamScore, awayTeamScore },
           { new: true }
         );
-        pubsub.publish(GAME_SCORE_UPDATED, updatedGame);
-        console.log("UPDATED GAME: ", updatedGame);
+        pubsub.publish(GAME_SCORE_UPDATED, { scoreUpdated: updatedGame });
         return updatedGame;
       } catch (err) {
         console.log("ERR: ", err);
@@ -56,9 +54,7 @@ export default {
       subscribe: withFilter(
         (_, __, { pubsub }) => pubsub.asyncIterator(GAME_SCORE_UPDATED),
         (payload, variables) => {
-          console.log("PAYLOAD: ", payload);
-          console.log("VARIABLES: ", variables);
-          return payload._id == variables.gameId;
+          return payload.scoreUpdated._id == variables.gameId;
         }
       )
     }
