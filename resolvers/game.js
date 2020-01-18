@@ -54,7 +54,9 @@ export default {
       subscribe: withFilter(
         (_, __, { pubsub }) => pubsub.asyncIterator(GAME_SCORE_UPDATED),
         (payload, variables) => {
-          return payload.scoreUpdated._id == variables.gameId;
+          console.log("PAYLOAD: ", payload);
+          console.log("VARIABLES: ", variables);
+          return payload.scoreUpdated.boardId == variables.gameId;
         }
       )
     }
