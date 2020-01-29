@@ -31,7 +31,7 @@
     "@playlyfe/gql": "^2.6.0",
     "apollo-server": "^2.9.15",
     "apollo-server-express": "^1.4.0",
-    "bcrypt": "^2.0.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
