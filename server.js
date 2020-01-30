@@ -24,7 +24,9 @@ const server = new ApolloServer({
   context: {
     models,
     loaders,
-    pubsub
+    pubsub,
+    SECRET: process.env.SECRET,
+    SECRET2: process.env.SECRET2
   }
 });
 

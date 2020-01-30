@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { tryLogin } from "../auth";
 
 export default {
@@ -16,12 +17,15 @@ export default {
       tryLogin(email, password, models, SECRET, SECRET2),
     register: async (_, args, { models }) => {
       try {
+        // eslint-disable-next-line no-param-reassign
+        args.password = await bcrypt.hash(args.password, 12);
         const user = await models.User.create(args);
         return {
           ok: true,
           user
         };
       } catch (err) {
+        console.log("ERR:", err);
         return {
           ok: false,
           errors: "Something went wrong"

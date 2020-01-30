@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 export const createTokens = async (user, secret, secret2) => {
   const createToken = jwt.sign(
     {
-      user: _.pick(user, ["id"])
+      user: _.pick(user, ["_id"])
     },
     secret,
     {
@@ -15,7 +15,7 @@ export const createTokens = async (user, secret, secret2) => {
 
   const createRefreshToken = jwt.sign(
     {
-      user: _.pick(user, "id")
+      user: _.pick(user, "_id")
     },
     secret2,
     {
@@ -74,12 +74,12 @@ export const refreshTokens = async (
 };
 
 export const tryLogin = async (email, password, models, SECRET, SECRET2) => {
-  const user = await models.User.findOne({ where: { email }, raw: true });
+  const user = await models.User.findOne({ email });
   if (!user) {
     // user with provided email not found
     return {
       ok: false,
-      errors: [{ path: "email", message: "Wrong email" }]
+      errors: "Incorrect user information"
     };
   }
 
@@ -88,7 +88,7 @@ export const tryLogin = async (email, password, models, SECRET, SECRET2) => {
     // bad password
     return {
       ok: false,
-      errors: [{ path: "password", message: "Wrong password" }]
+      errors: "Incorrect login information"
     };
   }
 
