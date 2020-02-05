@@ -27,7 +27,7 @@ const server = new ApolloServer({
     pubsub,
     SECRET: process.env.SECRET,
     SECRET2: process.env.SECRET2,
-    token: i.req.headers.authorization
+    token: i.req ? i.req.headers.authorization : ""
   })
 });
 
