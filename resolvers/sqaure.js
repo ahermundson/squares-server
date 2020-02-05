@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import { withFilter } from "graphql-subscriptions";
 
 const SQUARE_TAKEN = "SQUARE_TAKEN";
@@ -12,14 +13,15 @@ export default {
     }
   },
   Mutation: {
-    markSquare: async (_, { id }, { models, pubsub }) => {
+    markSquare: async (_, { id }, { models, pubsub, token, SECRET }) => {
+      const { user } = jwt.verify(token, SECRET);
       const updatedSquare = await models.Square.findOneAndUpdate(
         {
           _id: id
         },
         {
           isTaken: true,
-          takenByUser: "5bf616b49a7d1e306f841fe8"
+          takenByUser: user
         },
         { new: true }
       );

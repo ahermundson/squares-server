@@ -21,13 +21,14 @@ const pubsub = new PubSub();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: {
+  context: i => ({
     models,
     loaders,
     pubsub,
     SECRET: process.env.SECRET,
-    SECRET2: process.env.SECRET2
-  }
+    SECRET2: process.env.SECRET2,
+    token: i.req.headers.authorization
+  })
 });
 
 server.listen().then(({ url, subscriptionsUrl }) => {
