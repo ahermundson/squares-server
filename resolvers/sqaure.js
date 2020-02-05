@@ -27,6 +27,7 @@ export default {
         },
         { new: true }
       );
+      console.log("pubsub: ", pubsub.publish);
       pubsub.publish(SQUARE_TAKEN, {
         squareTaken: updatedSquare
       });
