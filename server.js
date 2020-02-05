@@ -1,7 +1,10 @@
+import http from "http";
 import mongoose from "mongoose";
 import path from "path";
-import { ApolloServer, PubSub } from "apollo-server";
+import express from "express";
+import { ApolloServer } from "apollo-server-express";
 import { fileLoader, mergeTypes, mergeResolvers } from "merge-graphql-schemas";
+import { PubSub } from "graphql-subscriptions";
 import mongoConnection from "./modules/mongo-connection";
 import models from "./models";
 // import { createGameRoute, createGameHandler } from "./handlers/newGame";
@@ -21,16 +24,30 @@ const pubsub = new PubSub();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: {
+  context: i => ({
     models,
     loaders,
     pubsub,
     SECRET: process.env.SECRET,
-    SECRET2: process.env.SECRET2
-  }
+    SECRET2: process.env.SECRET2,
+    token: i.req.headers.authorization
+  })
 });
 
-server.listen().then(({ url, subscriptionsUrl }) => {
-  console.log(`server started at ${url}`);
-  console.log(`subscriptions url = ${subscriptionsUrl}`);
+const app = express();
+server.applyMiddleware({ app });
+
+const httpServer = http.createServer(app);
+server.installSubscriptionHandlers(httpServer);
+
+// app.use("/graphiql", graphiqlExpress({ endpointURL: "/graphql" }));
+const PORT = 4000;
+
+httpServer.listen(PORT, () => {
+  console.log(
+    `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
+  );
+  console.log(
+    `🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`
+  );
 });

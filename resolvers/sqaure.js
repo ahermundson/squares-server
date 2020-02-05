@@ -5,10 +5,14 @@ const SQUARE_TAKEN = "SQUARE_TAKEN";
 export default {
   Subscription: {
     squareTaken: {
-      subscribe: withFilter(
-        (_, __, { pubsub }) => pubsub.asyncIterator(SQUARE_TAKEN),
-        (payload, variables) => payload.squareTaken.board == variables.id
-      )
+      subscribe: (_, __, { pubsub }) => pubsub.asyncIterator(SQUARE_TAKEN)
+      // subscribe: withFilter(
+      //   (_, __, { pubsub }) => pubsub.asyncIterator(SQUARE_TAKEN),
+      //   (payload, variables) => {
+      //     console.log("JKLFSJDKLJFSKLJFKLSDL");
+      //     return payload.squareTaken.board == variables.id;
+      //   }
+      // )
     }
   },
   Mutation: {
@@ -23,6 +27,7 @@ export default {
         },
         { new: true }
       );
+      console.log("pubsub: ", pubsub.publish);
       pubsub.publish(SQUARE_TAKEN, {
         squareTaken: updatedSquare
       });
