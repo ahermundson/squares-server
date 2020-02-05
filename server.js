@@ -5,8 +5,10 @@ import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { fileLoader, mergeTypes, mergeResolvers } from "merge-graphql-schemas";
 import { PubSub } from "graphql-subscriptions";
+import jwt from "jsonwebtoken";
 import mongoConnection from "./modules/mongo-connection";
 import models from "./models";
+import { refreshTokens } from "./auth";
 // import { createGameRoute, createGameHandler } from "./handlers/newGame";
 import loaders from "./loaders";
 
@@ -21,6 +23,38 @@ mongoose.set("useFindAndModify", false);
 mongoConnection.connect();
 const pubsub = new PubSub();
 
+const app = express();
+
+const addUser = async (req, res, next) => {
+  console.log("IN ADD USER");
+  const token = req.headers.authorization;
+  console.log(token);
+  if (token) {
+    try {
+      const { user } = jwt.verify(token, process.env.SECRET);
+      req.user = user;
+    } catch (err) {
+      // const refreshToken = req.headers["x-refresh-token"];
+      // const newTokens = await refreshTokens(
+      //   token,
+      //   refreshToken,
+      //   models,
+      //   process.env.SECRET,
+      //   process.env.SECRET2
+      // );
+
+      // if (newTokens.token && newTokens.refreshToken) {
+      //   res.set("Access-Control-Expose-Headers", "x-token, x-refresh-token");
+      //   res.set("x-token", newTokens.token);
+      //   res.set("x-refresh-token", newTokens.refreshToken);
+      // }
+      // req.user = newTokens.user;
+      next();
+    }
+  }
+  next();
+};
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -30,12 +64,11 @@ const server = new ApolloServer({
     pubsub,
     SECRET: process.env.SECRET,
     SECRET2: process.env.SECRET2,
-    token: i.req.headers.authorization
+    token: i.req ? i.req.headers.authorization : ""
   })
 });
-
-const app = express();
 server.applyMiddleware({ app });
+app.use(addUser);
 
 const httpServer = http.createServer(app);
 server.installSubscriptionHandlers(httpServer);
