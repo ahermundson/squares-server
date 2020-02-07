@@ -26,9 +26,7 @@ const pubsub = new PubSub();
 const app = express();
 
 const addUser = async (req, res, next) => {
-  console.log("IN ADD USER");
   const token = req.headers.authorization;
-  console.log(token);
   if (token) {
     try {
       const { user } = jwt.verify(token, process.env.SECRET);
@@ -58,17 +56,19 @@ const addUser = async (req, res, next) => {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: i => ({
-    models,
-    loaders,
-    pubsub,
-    SECRET: process.env.SECRET,
-    SECRET2: process.env.SECRET2,
-    token: i.req ? i.req.headers.authorization : ""
-  })
+  context: i => {
+    return {
+      models,
+      loaders,
+      pubsub,
+      SECRET: process.env.SECRET,
+      SECRET2: process.env.SECRET2,
+      user: i.req ? i.req.user : {}
+    };
+  }
 });
-server.applyMiddleware({ app });
 app.use(addUser);
+server.applyMiddleware({ app });
 
 const httpServer = http.createServer(app);
 server.installSubscriptionHandlers(httpServer);
