@@ -5,6 +5,7 @@ const GAME_SCORE_UPDATED = "GAME_SCORE_UPDATED";
 export default {
   Query: {
     allGames: (_, __, { models }) => models.Game.find({})
+    // gamesByUser: (_, __, { models, user }) => models.User.find({ id: user._id })
   },
   Mutation: {
     createNewGame: async (_, { homeTeamId, awayTeamId }, { models }) => {

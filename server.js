@@ -25,12 +25,13 @@ const pubsub = new PubSub();
 
 const app = express();
 
-const addUser = async (req, res, next) => {
+const addUser = async req => {
   const token = req.headers.authorization;
+  console.log("TOKEN: ", token);
   if (token) {
     try {
       const { user } = jwt.verify(token, process.env.SECRET);
-      req.user = user;
+      return user;
     } catch (err) {
       // const refreshToken = req.headers["x-refresh-token"];
       // const newTokens = await refreshTokens(
@@ -47,27 +48,27 @@ const addUser = async (req, res, next) => {
       //   res.set("x-refresh-token", newTokens.refreshToken);
       // }
       // req.user = newTokens.user;
-      next();
+      return "";
     }
   }
-  next();
+  return "";
 };
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: i => {
+    const user = addUser(i.req);
     return {
       models,
       loaders,
       pubsub,
       SECRET: process.env.SECRET,
       SECRET2: process.env.SECRET2,
-      user: i.req ? i.req.user : {}
+      user
     };
   }
 });
-app.use(addUser);
 server.applyMiddleware({ app });
 
 const httpServer = http.createServer(app);

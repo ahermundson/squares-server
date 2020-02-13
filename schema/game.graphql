@@ -17,6 +17,7 @@ type Game {
 
 type Query {
   allGames: [Game!]
+  gameByUser(userId: ID!): [Game]
 }
 
 type newGameResponse {

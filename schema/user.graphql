@@ -9,6 +9,8 @@ type RegisterResponse {
   ok: Boolean!
   user: User
   errors: String
+  token: String
+  refreshToken: String
 }
 
 type User {
@@ -18,6 +20,7 @@ type User {
   last_name: String!
   username: String!
   password: String!
+  # games: [Game]
 }
 
 type Mutation {

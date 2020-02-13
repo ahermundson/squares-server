@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { tryLogin } from "../auth";
+import { tryLogin, createTokens } from "../auth";
 
 export default {
   Mutation: {
@@ -15,14 +15,22 @@ export default {
     },
     login: (_, { email, password }, { models, SECRET, SECRET2 }) =>
       tryLogin(email, password, models, SECRET, SECRET2),
-    register: async (_, args, { models }) => {
+    register: async (_, args, { models, SECRET, SECRET2 }) => {
       try {
         // eslint-disable-next-line no-param-reassign
         args.password = await bcrypt.hash(args.password, 12);
         const user = await models.User.create(args);
+        const refreshTokenSecret = user.password + SECRET2;
+        const [token, refreshToken] = await createTokens(
+          user,
+          SECRET,
+          refreshTokenSecret
+        );
         return {
           ok: true,
-          user
+          user,
+          token,
+          refreshToken
         };
       } catch (err) {
         console.log("ERR:", err);

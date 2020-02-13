@@ -9,6 +9,7 @@ const userSchema = new Schema(
     email: { type: String },
     username: { type: String },
     password: { type: String }
+    // games: { type: Array }
   },
   { collection: "Users" }
 );
