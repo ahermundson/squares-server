@@ -1,3 +1,4 @@
+# import Game from './game.graphql
 type LoginResponse {
   ok: Boolean!
   token: String
@@ -20,11 +21,15 @@ type User {
   last_name: String!
   username: String!
   password: String!
-  # games: [Game]
+  games: [Game]
+}
+
+type Query {
+  getAllUsers: [User]!
+  getUser(id: ID!): User
 }
 
 type Mutation {
-  createUser: RegisterResponse!
   register(
     username: String!
     email: String!

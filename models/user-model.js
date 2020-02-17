@@ -6,10 +6,10 @@ const userSchema = new Schema(
   {
     first_name: { type: String },
     last_name: { type: String },
-    email: { type: String },
-    username: { type: String },
-    password: { type: String }
-    // games: { type: Array }
+    email: { type: String, unique: true },
+    username: { type: String, unique: true },
+    password: { type: String },
+    games: { type: Array }
   },
   { collection: "Users" }
 );

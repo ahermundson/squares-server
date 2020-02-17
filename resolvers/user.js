@@ -2,17 +2,11 @@ import bcrypt from "bcryptjs";
 import { tryLogin, createTokens } from "../auth";
 
 export default {
+  Query: {
+    getAllUsers: (_, __, { models }) => models.User.find(),
+    getUser: (_, { id }, { models }) => models.User.findOne({ _id: id })
+  },
   Mutation: {
-    createUser: async (_, __, { models }) => {
-      const newUser = await models.User.create({
-        email: "alex.hermundson@gmail.com",
-        first_name: "Alex",
-        last_name: "Hermundson",
-        isAdmin: true,
-        username: "ahermundson"
-      });
-      return newUser;
-    },
     login: (_, { email, password }, { models, SECRET, SECRET2 }) =>
       tryLogin(email, password, models, SECRET, SECRET2),
     register: async (_, args, { models, SECRET, SECRET2 }) => {
@@ -39,6 +33,14 @@ export default {
           errors: "Something went wrong"
         };
       }
+    }
+  },
+  User: {
+    async games({ games }, __, { models }) {
+      const promises = [];
+      games.forEach(game => promises.push(models.Game.find({ _id: game })));
+      const results = await Promise.all(promises);
+      return results.flat();
     }
   }
 };
