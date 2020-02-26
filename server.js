@@ -25,40 +25,44 @@ const pubsub = new PubSub();
 
 const app = express();
 
-const addUser = async req => {
-  const token = req.headers.authorization;
-  console.log("TOKEN: ", token);
+const addUser = async (req, res) => {
+  const token = req.headers["x-token"];
+  console.log(token);
   if (token) {
     try {
       const { user } = jwt.verify(token, process.env.SECRET);
+      console.log("USER: ", user);
       return user;
     } catch (err) {
-      // const refreshToken = req.headers["x-refresh-token"];
-      // const newTokens = await refreshTokens(
-      //   token,
-      //   refreshToken,
-      //   models,
-      //   process.env.SECRET,
-      //   process.env.SECRET2
-      // );
+      console.log("Error: ", err);
+      const refreshToken = req.headers["x-refresh-token"];
+      const newTokens = await refreshTokens(
+        token,
+        refreshToken,
+        models,
+        process.env.SECRET,
+        process.env.SECRET2
+      );
+      console.log("TOKENS: ", newTokens);
 
-      // if (newTokens.token && newTokens.refreshToken) {
-      //   res.set("Access-Control-Expose-Headers", "x-token, x-refresh-token");
-      //   res.set("x-token", newTokens.token);
-      //   res.set("x-refresh-token", newTokens.refreshToken);
-      // }
-      // req.user = newTokens.user;
-      return "";
+      if (newTokens.token && newTokens.refreshToken) {
+        res.set("Access-Control-Expose-Headers", "x-token, x-refresh-token");
+        res.set("x-token", newTokens.token);
+        res.set("x-refresh-token", newTokens.refreshToken);
+        return newTokens.user._id;
+      }
+      res.status(500).send();
     }
   }
-  return "";
+  return {};
 };
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: i => {
-    const user = addUser(i.req);
+  context: async i => {
+    const user = await addUser(i.req, i.res);
+    console.log("UNDEFINED :", user);
     return {
       models,
       loaders,
@@ -74,7 +78,6 @@ server.applyMiddleware({ app });
 const httpServer = http.createServer(app);
 server.installSubscriptionHandlers(httpServer);
 
-// app.use("/graphiql", graphiqlExpress({ endpointURL: "/graphql" }));
 const PORT = 4000;
 
 httpServer.listen(PORT, () => {
