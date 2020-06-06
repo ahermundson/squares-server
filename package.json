@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@playlyfe/gql": "^2.6.0",
-    "apollo-server-express": "^2.9.16",
+    "apollo-server-express": "^2.14.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
