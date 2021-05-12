@@ -47,7 +47,7 @@
     "merge-graphql-schemas": "^1.5.7",
     "moment": "^2.21.0",
     "mongoose": "^5.7.5",
-    "nodemailer": "^4.6.7",
+    "nodemailer": "^6.4.16",
     "request": "^2.85.0"
   }
 }
